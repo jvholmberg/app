@@ -1,5 +1,6 @@
 ### Create a separate collection with all keys in 'provisions'
 
+~~~~
 mr = db.runCommand({
   "mapreduce" : "provisions",
   "map" : function() {
@@ -8,3 +9,4 @@ mr = db.runCommand({
   "reduce" : function(key, stuff) { return null; },
   "out": "provisions" + "_keys"
 });
+~~~~
