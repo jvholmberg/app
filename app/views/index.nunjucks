@@ -4,5 +4,17 @@
   <h1>{{ title }}</h1>
   <p>Welcome to {{ title }}</p>
 
-  {{ provisions }}
+  <input name='search_provision' type='text' placeholder=Sök>
+
+  <script>
+    $('[name=search_provision]').on('keyup', (e) => {
+      $.get({
+        url: 'api/provision/search/'+e.currentTarget.value+'/0/1'
+      }).done(function(res) {
+        console.log(res);
+      });
+
+    });
+  </script>
+
 {% endblock %}
