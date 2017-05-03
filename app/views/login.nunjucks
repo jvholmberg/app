@@ -1,0 +1,31 @@
+{% extends 'layout.visitor.nunjucks' %}
+
+{% block content %}
+
+<div class="container">
+  <form class="login_form" action="/login" method="post">
+    <h2 class="login_form_heading">Please sign in</h2>
+    <label for="login_username" class="sr-only">Email address</label>
+    <input type="email" id="login_username" name="username" class="form-control" placeholder="Email address" required autofocus>
+    <label for="login_password" class="sr-only">Password</label>
+    <input type="password" id="login_password" name="password" class="form-control" placeholder="Password" required>
+    <div class="checkbox">
+      <label>
+        <input type="checkbox" value="remember-me"> Remember me
+      </label>
+    </div>
+    <button id="login_button" class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+    {% for e in error %}
+      <div class="alert alert-danger" role="alert">
+        {{ e }}
+      </div>
+    {% endfor %}
+    {% for s in success %}
+      <div class="alert alert-success" role="alert">
+        {{ s }}
+      </div>
+    {% endfor %}
+  </form>
+</div>
+
+{% endblock %}
