@@ -11,7 +11,7 @@ module.exports = function (app) {
 
 router.post('/login',
   passport.authenticate('local', {
-    successRedirect: '/profile',
+    successRedirect: '/home',
     failureRedirect: '/login',
     failureFlash: true
 }));
@@ -21,6 +21,7 @@ router.get('/login', function (req, res, next) {
   if (req.user) return res.redirect('/profile');
   res.render('login', {
     success: req.flash('success'),
-    error: req.flash('error')
+    error: req.flash('error'),
+    url: 'login'
   });
 });

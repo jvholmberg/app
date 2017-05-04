@@ -1,0 +1,31 @@
+{% extends 'layout.nunjucks' %}
+
+{% block content %}
+<h1>Home</h1>
+<ul class="list-group">
+  <li class="list-group-item">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-xs-8">
+          <p class=""></p>
+          Chest Workout
+        </div>
+        <div class="col-xs-4 text-right">
+          <div class="btn-group">
+            <button type="button" class="btn btn-primary">Display</button>
+            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <span class="caret"></span>
+              <span class="sr-only">Toggle Dropdown</span>
+            </button>
+            <ul class="dropdown-menu">
+              <li><a href="#">Edit Workout</a></li>
+              <li><a href="#">Delete Workout</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </li>
+</ul>
+{% endblock %}

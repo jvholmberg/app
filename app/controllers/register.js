@@ -56,6 +56,7 @@ router.post('/register', (req, res) => {
 router.get('/register', function (req, res, next) {
   if (req.user) return res.redirect('/profile');
   res.render('register', {
-    error: req.flash('error')
+    error: req.flash('error'),
+    url: 'register'
   });
 });

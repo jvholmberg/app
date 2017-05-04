@@ -7,5 +7,5 @@ module.exports = function(app) {
 
 router.post('/', (req, res) => {
   req.logout();
-  return res.redirect('index');
+  return res.redirect('/');
 });

@@ -9,11 +9,14 @@ module.exports = function (app) {
 };
 
 
-router.get('/profile', function (req, res, next) {
+router.get('/dashboard', function (req, res, next) {
   // If user is NOT logged in redirect to login
-  if (!req.user) return res.redirect('/login');
-  res.render('profile', {
+  if (!req.user ) { return res.redirect('/login'); }
+  if (req.user.username != 'johan.holmberg123@hotmail.com' ) {
+    return res.redirect('/profile');
+  }
+  res.render('dashboard', {
     user: req.user,
-    url: 'profile'
+    url: 'dashboard'
   });
 });
