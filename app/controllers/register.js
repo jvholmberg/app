@@ -2,6 +2,7 @@ var express = require('express'),
   router = express.Router(),
   mongoose = require('mongoose'),
   User = mongoose.model('User'),
+  Diary = mongoose.model('Diary'),
   passport = require('passport'),
   bcrypt = require('bcryptjs');
 
@@ -14,7 +15,7 @@ router.post('/register', (req, res) => {
 
   // Check if passwords match
   if (req.body.password !== req.body.password2) {
-    req.flash('error', 'Passwords does not match')
+    req.flash('error', 'Passwords does not match');
     return res.redirect('/register');
   }
 
@@ -25,7 +26,7 @@ router.post('/register', (req, res) => {
       return res.redirect('/register');
     }
     if (user) {
-      req.flash('error', 'Username is already taken')
+      req.flash('error', 'Username is already taken');
       return res.redirect('/register');
     }
 
@@ -42,11 +43,20 @@ router.post('/register', (req, res) => {
           password: hash
         }, (err, user) => {
           if (err) {
-            req.flash('error', 'An internal error occurred');
+            req.flash('error', 'An internal error occurred when creating user');
             return res.redirect('/register');
           }
-          req.flash('success', 'User created successfully');
-          return res.redirect('login');
+          Diary.create({
+            user: user._id
+          }, (err, diary) => {
+            if (err) {
+              req.flash('error', 'An internal error occurred when creating diary');
+              return res.redirect('/register');
+            }
+            
+            req.flash('success', 'User created successfully');
+            return res.redirect('login');
+          });
         });
       });
     });

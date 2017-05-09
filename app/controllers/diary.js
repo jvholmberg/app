@@ -1,19 +1,40 @@
 var express = require('express'),
   router = express.Router(),
   mongoose = require('mongoose'),
-  Exercise = mongoose.model('Exercise');
+  Diary = mongoose.model('Diary'),
+  User = mongoose.model('User');
 
 module.exports = function(app) {
   mongoose.Promise = require('bluebird');
   app.use('/', router);
 };
 
-router.get('/exercise', function (req, res, next) {
+router.get('/diary', function (req, res, next) {
   // If user is NOT logged in redirect to login
   if (!req.user) return res.redirect('/login');
-  res.render('exercise', {
+  res.render('diary', {
+    success: req.flash('success'),
+    error: req.flash('error'),
     user: req.user,
-    url: 'home'
+    url: 'Diary'
+  });
+});
+
+router.post('/diary/create', (req, res) => {
+  if (!req.user) return res.redirect('/login');
+
+  Diary.findOne({ user: req.user._id }, (err, diary) => {
+    if (err) {
+      req.flash('error', 'Exercise could not be created');
+      return res.redirect('/diary');
+    }
+    diary.exercises.push({
+      name: req.body.name,
+      timestamp: req.body.date
+    });
+    diary.save();
+    req.flash('success', 'Exercise was created successfully');
+    res.redirect('/home');
   });
 });
 
