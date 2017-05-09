@@ -5,8 +5,18 @@ var express = require('express'),
 
 module.exports = function(app) {
   mongoose.Promise = require('bluebird');
-  app.use('/api/exercise', router);
+  app.use('/', router);
 };
+
+router.get('/exercise', function (req, res, next) {
+  // If user is NOT logged in redirect to login
+  if (!req.user) return res.redirect('/login');
+  res.render('exercise', {
+    user: req.user,
+    url: 'home'
+  });
+});
+
 
 // This should not be used within application
 

@@ -2,7 +2,8 @@ var mongoose = require('mongoose'),
   Schema = mongoose.Schema;
 
 var ExerciseSchema = new Schema({
-  name: String
+  name: { type: String, default: '' },
+  timestamp: { type: Date, default: Date.now }
 });
 
 ExerciseSchema.virtual('date')
