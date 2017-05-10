@@ -2,7 +2,7 @@ var mongoose = require('mongoose'),
   Schema = mongoose.Schema;
 
 var DiarySchema = new Schema({
-  user: Schema.Types.ObjectId,
+  user: { type: String, default: '' },
   exercises: [{
     name: { type: String, default: '' },
     timestamp: { type: Date, default: Date.now }

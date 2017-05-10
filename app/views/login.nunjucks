@@ -14,16 +14,6 @@
     </label>
   </div>
   <button id="login_button" class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-  {% for e in error %}
-    <div class="alert alert-danger" role="alert">
-      {{ e }}
-    </div>
-  {% endfor %}
-  {% for s in success %}
-    <div class="alert alert-success" role="alert">
-      {{ s }}
-    </div>
-  {% endfor %}
 </form>
 
 {% endblock %}

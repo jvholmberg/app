@@ -38,22 +38,22 @@ router.post('/register', (req, res) => {
           return res.redirect('/register');
         }
 
-        User.create({
-          username: req.body.username,
-          password: hash
-        }, (err, user) => {
+        Diary.create({
+          user: req.body.username
+        }, (err, diary) => {
           if (err) {
-            req.flash('error', 'An internal error occurred when creating user');
+            req.flash('error', 'An internal error occurred when creating diary');
             return res.redirect('/register');
           }
-          Diary.create({
-            user: user._id
-          }, (err, diary) => {
+          User.create({
+            username: req.body.username,
+            password: hash,
+            diary: [diary._id]
+          }, (err, user) => {
             if (err) {
-              req.flash('error', 'An internal error occurred when creating diary');
+              req.flash('error', 'An internal error occurred when creating user');
               return res.redirect('/register');
             }
-            
             req.flash('success', 'User created successfully');
             return res.redirect('login');
           });

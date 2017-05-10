@@ -13,11 +13,6 @@
     <input type="password" id="register_password2" name="password2" class="form-control" placeholder="Confirm Password" required>
     <button id="register_button" class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
   </form>
-  {% for e in error %}
-    <div class="alert alert-danger" role="alert">
-      {{ e }}
-    </div>
-  {% endfor %}
 </div>
 
 {% endblock %}

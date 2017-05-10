@@ -23,7 +23,7 @@ router.get('/diary', function (req, res, next) {
 router.post('/diary/create', (req, res) => {
   if (!req.user) return res.redirect('/login');
 
-  Diary.findOne({ user: req.user._id }, (err, diary) => {
+  Diary.findById(req.user.diary[0], (err, diary) => {
     if (err) {
       req.flash('error', 'Exercise could not be created');
       return res.redirect('/diary');
