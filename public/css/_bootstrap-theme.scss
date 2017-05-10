@@ -81,6 +81,9 @@ table,
       color: #fff;
     }
   }
+  tbody > tr > td {
+    vertical-align: middle;
+  }
 }
 
 // Forms ======================================================================

@@ -21,6 +21,7 @@ router.get('/home', function (req, res, next) {
     res.render('home', {
       user: req.user,
       url: 'home',
+      exercises: diary.exercises,
       success: req.flash('success'),
       error: req.flash('error')
     });
