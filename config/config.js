@@ -27,7 +27,7 @@ var config = {
       name: 'app'
     },
     port: process.env.PORT || 3000,
-    db: 'mongodb://admin_jhg:Yj3MdA&s@ds157500.mlab.com:57500/heroku_5w8c0q8x'
+    db: 'mongodb://admin_jhg:l01vgaogov1qk2u9vt3f6ttp6q@ds157500.mlab.com:57500/heroku_5w8c0q8x'
   }
 };
 
