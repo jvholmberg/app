@@ -4,7 +4,6 @@ var express = require('express'),
   User = mongoose.model('User');
 
 module.exports = function (app) {
-  mongoose.Promise = require('bluebird');
   app.use('/', router);
 };
 

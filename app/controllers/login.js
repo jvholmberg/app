@@ -5,7 +5,6 @@ var express = require('express'),
   passport = require('passport');
 
 module.exports = function (app) {
-  mongoose.Promise = require('bluebird');
   app.use('/', router);
 };
 

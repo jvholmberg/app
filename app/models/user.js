@@ -3,8 +3,7 @@ var mongoose = require('mongoose'),
 
 var UserSchema = new Schema({
   username: String,
-  password: String,
-  diary: [Schema.Types.ObjectId]
+  password: String
 });
 
 UserSchema.virtual('date')

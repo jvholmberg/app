@@ -4,7 +4,6 @@ var express = require('express'),
   Nutrition = mongoose.model('Nutrition');
 
 module.exports = function(app) {
-  mongoose.Promise = require('bluebird');
   app.use('/api/nutrition', router);
 };
 

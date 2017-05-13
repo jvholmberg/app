@@ -2,6 +2,7 @@
 
 {% block content %}
 
+  <h1>Create Session</h1>
   <form action="/diary/create" method="post">
     <div class="form-group">
       <label for="exercise-date">Date</label>

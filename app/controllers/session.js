@@ -1,41 +1,32 @@
 var express = require('express'),
   router = express.Router(),
   mongoose = require('mongoose'),
-  Diary = mongoose.model('Diary'),
-  User = mongoose.model('User');
+  Session = mongoose.model('Session'),
+  SessionUtil = require('../utils/session');
 
 module.exports = function(app) {
-  mongoose.Promise = require('bluebird');
   app.use('/', router);
 };
 
-router.get('/diary', function (req, res, next) {
+router.get('/session', function (req, res, next) {
   // If user is NOT logged in redirect to login
   if (!req.user) return res.redirect('/login');
-  res.render('diary', {
+  res.render('session', {
     success: req.flash('success'),
     error: req.flash('error'),
     user: req.user,
-    url: 'Diary'
+    url: 'Session'
   });
 });
 
-router.post('/diary/create', (req, res) => {
+router.post('/session/create', (req, res) => {
   if (!req.user) return res.redirect('/login');
-
-  Diary.findById(req.user.diary[0], (err, diary) => {
-    if (err) {
-      req.flash('error', 'Exercise could not be created');
-      return res.redirect('/diary');
-    }
-    diary.exercises.push({
-      name: req.body.name,
-      timestamp: req.body.date
-    });
-    diary.save();
-    req.flash('success', 'Exercise was created successfully');
-    res.redirect('/home');
+  SessionUtil.createSession(data, (session) => {
+    console.log(session);
+  }, (err) => {
+    console.log(err);
   });
+
 });
 
 
