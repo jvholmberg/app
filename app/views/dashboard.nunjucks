@@ -2,4 +2,59 @@
 
 {% block content %}
   <h1>Dashboard</h1>
+
+  <div class="row">
+    <div class="col-xs-4">
+
+    </div>
+    <div class="col-xs-4">
+
+    </div>
+    <div class="col-xs-4">
+
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+<a class="btn btn-success" href="/session">Add Exercise</a>
+  <div class="row">
+    <div class="col-xs-12">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Category</th>
+            <th>Name</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for e in exercises %}
+            <tr data-toggle="collapse" data-target=".{{ e._id }}">
+              <td>{{ e.timestamp }}</td>
+              <td>{{ e.category }}</td>
+              <td>{{ e.name }}</td>
+              <td>
+                <a class="btn btn-sm btn-primary" href="/diary/edit/">Edit</a>
+                <a class="btn btn-sm btn-danger" href="/diary/delete/">Delete</a>
+              </td>
+            </tr>
+            <tr class="{{ e._id }} collapse">
+              <td colspan="4" >{{ e.name }}</td>
+            </tr>
+            <tr class="{{ e._id }} collapse">
+              <td colspan="4" >{{ e.name }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
 {% endblock %}

@@ -5821,6 +5821,7 @@ button.close {
 
 .alert-bar {
   margin-top: -25px;
+  padding-bottom: 25px;
   width: 100%;
   text-align: center; }
 
@@ -5895,7 +5896,8 @@ table tbody > tr > td,
 .has-warning .form-control,
 .has-warning .form-control:focus,
 .has-warning .input-group-addon {
-  border: 1px solid #FF7518; }
+  border: 1px solid #FF7518;
+  border-radius: 0; }
 
 .has-error .help-block,
 .has-error .control-label,

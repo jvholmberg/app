@@ -3,22 +3,75 @@
 {% block content %}
 
   <h1>Create Session</h1>
-  <form action="/diary/create" method="post">
-    <div class="form-group">
-      <label for="exercise-date">Date</label>
-      <div class="input-group date">
-        <input name="date" id="exercise-date" type="text" class="form-control">
-        <span class="input-group-addon">
-          <i class="glyphicon glyphicon-th"></i>
-        </span>
-      </div>
-    </div>
-    <div class="form-group">
+  <form action="/session/create" method="post">
+    {# Name #}
+    <div class="form-group form-group-sm">
       <label for="exercise-name">Name</label>
       <input name="name" type="text" class="form-control" id="exercise-name">
     </div>
-    <button type="submit" class="btn btn-success">Submit</button>
+    {# Category #}
+    <div class="form-group form-group-sm">
+      <label for="exercise-category">Category</label>
+      <select id="exercise-category" class="form-control" name="category">
+        {% for c in categories %}
+            <option value="{{ c.name }}">{{ c.name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    {# Date #}
+    <div class="form-group form-group-sm">
+      <label for="exercise-date">Date</label>
+      <div class="input-group input-group-sm date">
+        <input name="date" id="exercise-date" type="text" class="form-control">
+        <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+      </div>
+    </div>
+    <h4>Data</h4>
+    <div id="lol">
+
+    </div>
+    <div class="form-group form-group-sm">
+      <button type="submit" class="btn btn-primary">Create</button>
+      <a class="btn btn-danger" href="/dashboard">Cancel</a>
+    </div>
+
+    {# Exercises #}
   </form>
+
+
+
+
+  <script type="text/javascript">
+    var html = `
+    <div class="row">
+      <div class="form-group form-group-sm">
+        <div class="col-xs-6">
+          <input placeholder="Name" type="text" class="form-control">
+        </div>
+        <div class="col-xs-3">
+          <div class="input-group input-group-sm">
+            <input type="text" class="form-control" placeholder="Value" aria-describedby="basic-addon2">
+            <span class="input-group-addon" id="basic-addon2">kg</span>
+          </div>
+        </div>
+        <div class="col-xs-3">
+          <div class="input-group input-group-sm">
+            <input type="text" class="form-control" placeholder="Value" aria-describedby="basic-addon2">
+            <span class="input-group-addon" id="basic-addon2">x</span>
+          </div>
+        </div>
+      </div>
+    </div>`;
+    $('#lol').append(html);
+    $('#lol').append(html);
+    $('#lol').append(html);
+    $('#lol').append(html);
+    $('#lol').append(html);
+    $('#lol').append(html);
+  </script>
+
+
+
 
   <script type="text/javascript">
     $('.input-group.date').datepicker({

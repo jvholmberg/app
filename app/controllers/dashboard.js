@@ -1,7 +1,6 @@
 var express = require('express'),
   router = express.Router(),
-  mongoose = require('mongoose'),
-  User = mongoose.model('User');
+  SessionUtil = require('../utils/session');
 
 module.exports = function (app) {
   app.use('/', router);
@@ -11,11 +10,19 @@ module.exports = function (app) {
 router.get('/dashboard', function (req, res, next) {
   // If user is NOT logged in redirect to login
   if (!req.user ) { return res.redirect('/login'); }
-  if (req.user.username != 'johan.holmberg123@hotmail.com' ) {
-    return res.redirect('/profile');
-  }
-  res.render('dashboard', {
-    user: req.user,
-    url: 'dashboard'
-  });
+  SessionUtil.getSessionsForUser(req.user._id,
+    (sessions, msg) => {
+      res.render('dashboard', {
+        user: req.user,
+        url: 'dashboard',
+        exercises: sessions,
+        success: req.flash('success', msg)
+      });
+    }, (err) => {
+      res.render('dashboard', {
+        user: req.user,
+        url: 'dashboard',
+        error: req.flash('error', err)
+      });
+    }, 0, 100);
 });

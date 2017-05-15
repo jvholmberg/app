@@ -1,8 +1,7 @@
 var express = require('express'),
   router = express.Router(),
-  mongoose = require('mongoose'),
-  Session = mongoose.model('Session'),
-  SessionUtil = require('../utils/session');
+  SessionUtil = require('../utils/session'),
+  CategoryUtil = require('../utils/category');
 
 module.exports = function(app) {
   app.use('/', router);
@@ -11,22 +10,32 @@ module.exports = function(app) {
 router.get('/session', function (req, res, next) {
   // If user is NOT logged in redirect to login
   if (!req.user) return res.redirect('/login');
-  res.render('session', {
-    success: req.flash('success'),
-    error: req.flash('error'),
-    user: req.user,
-    url: 'Session'
-  });
+  CategoryUtil.getCategories((categories) => {
+    res.render('session', {
+      success: req.flash('success'),
+      error: req.flash('error'),
+      categories: categories,
+      url: 'Session'
+    });
+  }, () => {
+
+  })
+
 });
 
 router.post('/session/create', (req, res) => {
   if (!req.user) return res.redirect('/login');
+  var data = {
+    userId: req.user._id,
+    category: req.body.category,
+    name: req.body.name,
+    timestamp: req.body.date
+  };
   SessionUtil.createSession(data, (session) => {
-    console.log(session);
+    res.redirect('/dashboard')
   }, (err) => {
-    console.log(err);
+    res.redirect('/session');
   });
-
 });
 
 

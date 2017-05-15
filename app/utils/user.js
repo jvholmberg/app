@@ -1,6 +1,5 @@
 var mongoose = require('mongoose'),
   User = mongoose.model('User'),
-  Helpers = require('./helpers'),
   passport = require('passport'),
   bcrypt = require('bcryptjs');
 

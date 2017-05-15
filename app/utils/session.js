@@ -1,7 +1,6 @@
 var mongoose = require('mongoose'),
   User = mongoose.model('User'),
-  Session = mongoose.model('Session'),
-  Helpers = require('./helpers');
+  Session = mongoose.model('Session');
 
 module.exports = {
   getSessionById: (userId, next, stop) => {
@@ -16,7 +15,7 @@ module.exports = {
   getSessionsForUser: (userId, next, stop, skip, limit) => {
     Session.find({
       userId: userId
-    }).skip(skip).limit(limit)
+    }).sort({timestamp: -1}).skip(skip).limit(limit)
     .exec((err, sessions) => {
       if (err) { stop('Error when finding sessions'); }
       next(sessions);
@@ -25,17 +24,14 @@ module.exports = {
 
   createSession: (data, next, stop) => {
 
-    if (Helpers.isNullOrWhitespace(data.userId)) {
+    if (!data.userId) {
       return stop('Invalid User');
     }
-    if (Helpers.isNullOrWhitespace(data.name)) {
+    if (!data.name) {
       return stop('Name is not allowed to be empty');
     }
-    if (Helpers.isNullOrWhitespace(data.timestamp)) {
+    if (!data.timestamp) {
       return stop('Date is not allowed to be empty');
-    }
-    if (data.exercises === null || data.exercises.length === 0) {
-      return stop('No exercises given for session');
     }
 
     Session.create({
@@ -46,7 +42,7 @@ module.exports = {
       exercises: data.exercises
     }, (err, session) => {
       if (err) { stop('An error ocurred when creating session'); }
-      next(session);
+      next(session, 'Sessions loaded');
     });
   }
 };
