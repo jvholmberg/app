@@ -1,6 +1,5 @@
 var express = require('express'),
   router = express.Router(),
-  SessionUtil = require('../utils/session'),
   CategoryUtil = require('../utils/category');
 
 module.exports = function(app) {
@@ -22,7 +21,7 @@ router.get('/session', function (req, res, next) {
   })
 
 });
-// 
+//
 // router.post('/session/create', (req, res) => {
 //   if (!req.user) return res.redirect('/login');
 //   var data = {

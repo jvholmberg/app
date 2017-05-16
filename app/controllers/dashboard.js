@@ -1,6 +1,6 @@
 var express = require('express'),
   router = express.Router(),
-  SessionUtil = require('../utils/session');
+  RecordUtil = require('../utils/record');
 
 module.exports = function (app) {
   app.use('/', router);
@@ -10,12 +10,12 @@ module.exports = function (app) {
 router.get('/dashboard', function (req, res, next) {
   // If user is NOT logged in redirect to login
   if (!req.user ) { return res.redirect('/login'); }
-  SessionUtil.getSessionsForUser(req.user._id,
-    (sessions, msg) => {
+  RecordUtil.getRecordsForUser(req.user._id,
+    (msg, records) => {
       res.render('dashboard', {
         user: req.user,
         url: 'dashboard',
-        exercises: sessions,
+        exercises: records,
         success: req.flash('success', msg)
       });
     }, (err) => {
@@ -24,5 +24,5 @@ router.get('/dashboard', function (req, res, next) {
         url: 'dashboard',
         error: req.flash('error', err)
       });
-    }, 0, 100);
+    }, 0, 20);
 });

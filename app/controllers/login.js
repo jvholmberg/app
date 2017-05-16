@@ -2,12 +2,10 @@ var express = require('express'),
   router = express.Router(),
   mongoose = require('mongoose'),
   User = mongoose.model('User'),
-  passport = require('passport'),
-  RecordUtil = require('../utils/record');
+  passport = require('passport');
 
 module.exports = function (app) {
   app.use('/', router);
-  RecordUtil.createWeight();
 };
 
 router.post('/login',

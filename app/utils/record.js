@@ -26,16 +26,27 @@ function _getRecordIfExist(recordId, userId, timestamp, cb, ecb) {
 
 module.exports = {
 
+  getRecordsForUser: (userId, cb, ecb, skip, limit) => {
+    Record.find({
+      userId: userId
+    }).sort({timestamp: -1}).skip(skip).limit(limit)
+    .exec((err, records) => {
+      if (err) { return ecb('Error when finding records'); }
+      console.log(records);
+      return cb(records, 'Records for users fetched');
+    });
+  },
+
   createWeight: (user, data, cb, ecb) => {
     _getRecordIfExist(data.recordId, user._id, data.timestamp,
       (record) => {
         record.weight = data.weight;
         record.save((err) => {
           if (err) { ecb('Error when creating weight'); }
-          return cb('Weight was created');
+          return cb(record, 'Weight was created');
         });
       }, (err) => {
-        return ecb(err)
+        return ecb(err);
       });
   },
   updateWeight: (user, data, cb, ecb) => {
@@ -44,7 +55,7 @@ module.exports = {
         record.weight = data.weight;
         record.save((err) => {
           if (err) { ecb('Error when updating weight'); }
-          return cb('Weight was updated');
+          return cb(record, 'Weight was updated');
         });
       }, (err) => {
         return ecb(err)
@@ -56,7 +67,7 @@ module.exports = {
         record.weight = 0;
         record.save((err) => {
           if (err) { ecb('Error when deleting weight'); }
-          return cb('Weight was deleted');
+          return cb(record, 'Weight was deleted');
         });
       }, (err) => {
         return ecb(err)
@@ -70,7 +81,7 @@ module.exports = {
         record.session.category = data.category;
         record.save((err) => {
           if (err) { ecb('Error when creating session'); }
-          return cb('Session was created');
+          return cb(record, 'Session was created');
         });
       }, (err) => {
         return ecb(err)
@@ -83,7 +94,7 @@ module.exports = {
         record.session.category = data.category;
         record.save((err) => {
           if (err) { ecb('Error when updating session'); }
-          return cb('Session was updated');
+          return cb(record, 'Session was updated');
         });
       }, (err) => {
         return ecb(err)
@@ -96,7 +107,7 @@ module.exports = {
         record.session.category = '';
         record.save((err) => {
           if (err) { ecb('Error when deleting session'); }
-          return cb('Session was deleted');
+          return cb(record, 'Session was deleted');
         });
       }, (err) => {
         return ecb(err)
@@ -112,7 +123,7 @@ module.exports = {
         });
         record.save((err) => {
           if (err) { ecb('Error when creating nutrition'); }
-          return cb('Nutrition was created');
+          return cb(record, 'Nutrition was created');
         });
       }, (err) => {
         return ecb(err)
@@ -127,7 +138,7 @@ module.exports = {
         });
         record.save((err) => {
           if (err) { ecb('Error when updating nutrition'); }
-          return cb('Nutrition was updated');
+          return cb(record, 'Nutrition was updated');
         });
       }, (err) => {
         return ecb(err)
@@ -140,7 +151,7 @@ module.exports = {
         record.nutrition.category = '';
         record.save((err) => {
           if (err) { ecb('Error when deleting nutrition'); }
-          return cb('Nutrition was deleted');
+          return cb(record, 'Nutrition was deleted');
         });
       }, (err) => {
         return ecb(err)
