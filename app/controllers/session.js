@@ -22,21 +22,21 @@ router.get('/session', function (req, res, next) {
   })
 
 });
-
-router.post('/session/create', (req, res) => {
-  if (!req.user) return res.redirect('/login');
-  var data = {
-    userId: req.user._id,
-    category: req.body.category,
-    name: req.body.name,
-    timestamp: req.body.date
-  };
-  SessionUtil.createSession(data, (session) => {
-    res.redirect('/dashboard')
-  }, (err) => {
-    res.redirect('/session');
-  });
-});
+// 
+// router.post('/session/create', (req, res) => {
+//   if (!req.user) return res.redirect('/login');
+//   var data = {
+//     userId: req.user._id,
+//     category: req.body.category,
+//     name: req.body.name,
+//     timestamp: req.body.date
+//   };
+//   SessionUtil.createSession(data, (session) => {
+//     res.redirect('/dashboard')
+//   }, (err) => {
+//     res.redirect('/session');
+//   });
+// });
 
 
 // This should not be used within application

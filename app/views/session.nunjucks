@@ -3,7 +3,7 @@
 {% block content %}
 
   <h1>Create Session</h1>
-  <form action="/session/create" method="post">
+  <form action="/record/session/create" method="post">
     {# Name #}
     <div class="form-group form-group-sm">
       <label for="exercise-name">Name</label>
@@ -22,7 +22,7 @@
     <div class="form-group form-group-sm">
       <label for="exercise-date">Date</label>
       <div class="input-group input-group-sm date">
-        <input name="date" id="exercise-date" type="text" class="form-control">
+        <input name="timestamp" id="exercise-date" type="text" class="form-control">
         <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
       </div>
     </div>

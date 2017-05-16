@@ -3,6 +3,7 @@ var mongoose = require('mongoose'),
 
 var RecordSchema = new Schema({
   userId: Schema.Types.ObjectId,
+  weight: { type: Number, default: 0 },
   timestamp: { type: Date, default: Date.now },
   session: {
     name: { type: String, default: '' },
@@ -23,9 +24,8 @@ var RecordSchema = new Schema({
     }]
   },
   nutrition: [{
-    name: { type: String, default: '' },
-    protein: { type: Number, default: 0 },
-    carbs: { type: Number, default: 0 }
+    nutritionId: Schema.Types.ObjectId,
+    amount: { type: Number, default: 0 }
   }]
 
 });
