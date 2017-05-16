@@ -11,11 +11,14 @@ router.get('/dashboard', function (req, res, next) {
   // If user is NOT logged in redirect to login
   if (!req.user ) { return res.redirect('/login'); }
   RecordUtil.getRecordsForUser(req.user._id,
-    (msg, records) => {
+    (records, msg) => {
+      for (var i = 0; i < records.length; i++) {
+        console.log(records[i]);
+      }
       res.render('dashboard', {
         user: req.user,
         url: 'dashboard',
-        exercises: records,
+        records: records,
         success: req.flash('success', msg)
       });
     }, (err) => {
