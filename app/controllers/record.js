@@ -56,12 +56,12 @@ router.post('/session/update', (req, res) => {
 
   });
 });
-router.post('/session/delete', (req, res) => {
+router.get('/session/delete/:recordId/:sessionId', (req, res) => {
   if (!req.user) return res.redirect('/login');
-  RecordUtil.deleteSession(req.user, req.body, (err, record) => {
-
+  RecordUtil.deleteSession(req.user, req.params, (err, record) => {
+    console.log(record);
   }, (err) => {
-
+    console.log(err);
   });
 });
 

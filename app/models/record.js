@@ -5,7 +5,7 @@ var RecordSchema = new Schema({
   userId: Schema.Types.ObjectId,
   weight: { type: Number, default: 0 },
   timestamp: { type: Date, default: Date.now },
-  session: {
+  session: [{
     name: { type: String, default: '' },
     category: { type: String, default: '' },
     exercise: [{
@@ -22,7 +22,7 @@ var RecordSchema = new Schema({
         }
       }]
     }]
-  },
+  }],
   nutrition: [{
     nutritionId: Schema.Types.ObjectId,
     amount: { type: Number, default: 0 }
