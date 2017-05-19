@@ -8,10 +8,11 @@ module.exports = function(app) {
 };
 
 router.post('/register', (req, res) => {
-  UserUtil.registerUser((doc, msg) => {
-
+  UserUtil.registerUser(req.body, (doc, msg) => {
+    res.redirect('/login');
   }, (err) => {
-
+    req.flash('error', err);
+    res.redirect('/register');
   });
 });
 

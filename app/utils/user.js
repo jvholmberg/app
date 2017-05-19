@@ -4,35 +4,35 @@ var mongoose = require('mongoose'),
   bcrypt = require('bcryptjs');
 
 module.exports = {
-  registerUser: (body, next, stop) => {
+  registerUser: (body, cb, ecb) => {
     // Check if passwords match
     if (body.password !== body.password2) {
-      return stop('Passwords does not match');
+      return ecb('Passwords does not match');
     }
 
     // Check if username is taken
     User.findOne({ username: body.username }, (err, user) => {
       if (err) {
-        return stop('An internal error occurred');
+        return ecb('An internal error occurred');
       }
       if (user) {
-        return stop('Username is already taken');
+        return ecb('Username is already taken');
       }
 
       // Encrypt password
       bcrypt.genSalt(10, (err, salt) => {
         bcrypt.hash(body.password, salt, (err, hash) => {
           if (err) {
-            return stop('An internal error occurred');
+            return ecb('An internal error occurred');
           }
           User.create({
             username: body.username,
             password: hash
           }, (err, user) => {
             if (err) {
-              return stop('An internal error occurred when creating user');
+              return ecb('An internal error occurred when creating user');
             }
-            return next('User created successfully');
+            return cb('User created successfully');
           });
         });
       });
