@@ -15,7 +15,7 @@
         window.location.replace('/profile');
       })
       .fail(function(e) {
-        console.log(e);
+        
       })
   });
 })();

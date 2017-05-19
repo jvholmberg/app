@@ -42,9 +42,10 @@ router.post('/weight/delete', (req, res) => {
 router.post('/session/create', (req, res) => {
   if (!req.user) return res.redirect('/login');
   RecordUtil.createSession(req.user, req.body, (err, record) => {
-    console.log(record);
+    res.redirect('/dashboard');
   }, (err) => {
-    console.log(err);
+    req.flash('error', err);
+    res.redirect('/session');
   });
 });
 
@@ -59,9 +60,10 @@ router.post('/session/update', (req, res) => {
 router.get('/session/delete/:recordId/:sessionId', (req, res) => {
   if (!req.user) return res.redirect('/login');
   RecordUtil.deleteSession(req.user, req.params, (err, record) => {
-    console.log(record);
+    res.redirect('/dashboard');
   }, (err) => {
-    console.log(err);
+    req.flash('error', err);
+    res.redirect('/dashboard');
   });
 });
 

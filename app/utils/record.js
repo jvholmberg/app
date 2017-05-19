@@ -32,7 +32,6 @@ module.exports = {
     }).sort({timestamp: -1}).skip(skip).limit(limit)
     .exec((err, records) => {
       if (err) { return ecb('Error when finding records'); }
-      console.log(records);
       return cb(records, 'Records for users fetched');
     });
   },

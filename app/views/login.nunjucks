@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<form class="login_form" action="/login" method="post">
+<form class="login_form" action="/user/login" method="post">
   <h2 class="login_form_heading">Please sign in</h2>
   <label for="login_username" class="sr-only">Email address</label>
   <input type="email" id="login_username" name="username" class="form-control" placeholder="Email address" required autofocus>

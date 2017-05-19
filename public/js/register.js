@@ -14,10 +14,10 @@
         password: $passwordField.value,
         password2: $passwordField2.value
       }, function() {
-        console.log('sccss');
+
       })
       .fail(function(e) {
-        console.log(e);
+        
       })
   });
 })();

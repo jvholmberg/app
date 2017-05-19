@@ -44,7 +44,7 @@
         </ul>
 
         {% if user %}
-        <form class="navbar-form navbar-right" action="/logout" method="post">
+        <form class="navbar-form navbar-right" action="/user/logout" method="post">
           <button class="btn btn-danger" type="submit">Logout</button>
         </form>
         {% endif %}

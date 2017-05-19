@@ -41,11 +41,8 @@
                 <td>{{ r.timestamp }}</td>
                 <td>{{ s.name }}</td>
                 <td>
-                  <a class="btn btn-sm btn-primary" href="/diary/edit/">Edit</a>
-                  <form action="/record/session/delete/{{r._id}}/{{s._id}}" method="get">
-                    <input type="submit" class="btn btn-sm btn-danger" href="/diary/delete/">Delete</input>
-                  </form>
-
+                  <a class="btn btn-sm btn-primary" href="/session/edit/{{s._id}}">Edit</a>
+                  <a class="btn btn-sm btn-danger" href="/record/session/delete/{{r._id}}/{{s._id}}">Delete</a>
                 </td>
               </tr>
             {% endfor %}
