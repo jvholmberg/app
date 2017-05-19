@@ -4,7 +4,7 @@ var mongoose = require('mongoose'),
   bcrypt = require('bcryptjs');
 
 module.exports = {
-  register: (body, next, stop) => {
+  registerUser: (body, next, stop) => {
     // Check if passwords match
     if (body.password !== body.password2) {
       return stop('Passwords does not match');

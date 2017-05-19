@@ -8,7 +8,7 @@ module.exports = function(app) {
 
 router.post('/category/create', (req, res) => {
   if (!req.user) return res.redirect('/login');
-  CategoryUtil.createCategory(req.body, (session) => {
+  CategoryUtil.createCategory(req.body, (doc, msg) => {
     res.redirect('/admin', {
       user: req.user
     })

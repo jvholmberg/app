@@ -24,11 +24,11 @@ router.get('/dashboard', function (req, res, next) {
   if (!req.user ) { return res.redirect('/login'); }
 
   RecordUtil.getRecordsForUser(req.user._id,
-    (records, msg) => {
+    (docs, msg) => {
       res.render('dashboard', {
         user: req.user,
         url: 'dashboard',
-        records: records,
+        records: docs,
         success: req.flash('success', msg)
       });
     }, (err) => {
@@ -42,11 +42,11 @@ router.get('/dashboard', function (req, res, next) {
 router.get('/session', function (req, res, next) {
   // If user is NOT logged in redirect to login
   if (!req.user) return res.redirect('/login');
-  CategoryUtil.getCategories((categories) => {
+  CategoryUtil.getCategories((docs, msg) => {
     res.render('session', {
       success: req.flash('success'),
       error: req.flash('error'),
-      categories: categories,
+      categories: docs,
       url: 'Session'
     });
   }, () => {
@@ -56,11 +56,11 @@ router.get('/session', function (req, res, next) {
 router.get('/session/edit/:sessionId', function (req, res, next) {
   // If user is NOT logged in redirect to login
   if (!req.user) return res.redirect('/login');
-  CategoryUtil.getCategories((categories) => {
+  CategoryUtil.getCategories((docs, msg) => {
     res.render('session', {
       success: req.flash('success'),
       error: req.flash('error'),
-      categories: categories,
+      categories: docs,
       url: 'Session'
     });
   }, () => {
