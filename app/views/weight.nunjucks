@@ -1,0 +1,28 @@
+{% extends 'layout.nunjucks' %}
+
+{% block content %}
+
+  <h1>Create Weight</h1>
+  <form action="/record/weight/create" method="post">
+    {# Weight #}
+    <div class="form-group form-group-sm">
+      <label for="exercise-weight">Name</label>
+      <input name="weight" type="text" class="form-control" id="exercise-weight">
+    </div>
+    <div class="form-group form-group-sm">
+      <button type="submit" class="btn btn-primary">Create</button>
+      <a class="btn btn-danger" href="/dashboard">Cancel</a>
+    </div>
+
+    <input name="recordId" type="text" class="form-control">
+
+  </form>
+
+  <script type="text/javascript">
+
+
+    var recordId = location.pathname.split('/');
+    recordId = recordId[recordId.length-1];
+      $('input[name=recordId]').val(recordId);
+  </script>
+{% endblock %}

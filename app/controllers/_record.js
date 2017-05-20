@@ -1,6 +1,9 @@
 var express = require('express'),
   router = express.Router(),
-  RecordUtil = require('../utils/record');
+  RecordUtil = require('../utils/record'),
+  SessionUtil = require('../utils/session'),
+  NutritionUtil = require('../utils/nutrition'),
+  WeightUtil = require('../utils/weight');
 
 module.exports = function(app) {
   app.use('/record', router);
@@ -12,26 +15,34 @@ module.exports = function(app) {
 */
 router.post('/weight/create', (req, res) => {
   if (!req.user) return res.redirect('/login');
-  RecordUtil.createWeight(req.user, req.body, (doc, msg) => {
-
+  WeightUtil.createWeight(req.user, req.body, (doc, msg) => {
+    console.log(msg);
+    req.flash('success', msg);
+    res.redirect('/dashboard');
   }, (err) => {
-
+    console.log(err);
+    req.flash('error', err);
+    res.redirect('/dashboard');
   });
 });
 router.post('/weight/update', (req, res) => {
   if (!req.user) return res.redirect('/login');
-  RecordUtil.updateWeight(req.user, req.body, (doc, msg) => {
-
+  WeightUtil.updateWeight(req.user, req.body, (doc, msg) => {
+    req.flash('success', msg);
+    res.redirect('/dashboard');
   }, (err) => {
-
+    req.flash('error', err);
+    res.redirect('/dashboard');
   });
 });
 router.post('/weight/delete', (req, res) => {
   if (!req.user) return res.redirect('/login');
-  RecordUtil.deleteWeight(req.user, req.body, (doc, msg) => {
-
+  WeightUtil.deleteWeight(req.user, req.body, (doc, msg) => {
+    req.flash('success', msg);
+    res.redirect('/dashboard');
   }, (err) => {
-
+    req.flash('error', err);
+    res.redirect('/dashboard');
   });
 });
 
@@ -41,7 +52,7 @@ router.post('/weight/delete', (req, res) => {
 */
 router.post('/session/create', (req, res) => {
   if (!req.user) return res.redirect('/login');
-  RecordUtil.createSession(req.user, req.body, (doc, msg) => {
+  SessionUtil.createSession(req.user, req.body, (doc, msg) => {
     res.redirect('/dashboard');
   }, (err) => {
     req.flash('error', err);
@@ -51,7 +62,7 @@ router.post('/session/create', (req, res) => {
 
 router.post('/session/update', (req, res) => {
   if (!req.user) return res.redirect('/login');
-  RecordUtil.updateSession(req.user, req.body, (doc, msg) => {
+  SessionUtil.updateSession(req.user, req.body, (doc, msg) => {
 
   }, (err) => {
 
@@ -59,7 +70,7 @@ router.post('/session/update', (req, res) => {
 });
 router.get('/session/delete/:recordId/:sessionId', (req, res) => {
   if (!req.user) return res.redirect('/login');
-  RecordUtil.deleteSession(req.user, req.params, (doc, msg) => {
+  SessionUtil.deleteSession(req.user, req.params, (doc, msg) => {
     res.redirect('/dashboard');
   }, (err) => {
     req.flash('error', err);
@@ -73,7 +84,7 @@ router.get('/session/delete/:recordId/:sessionId', (req, res) => {
 */
 router.post('/nutrition/create', (req, res) => {
   if (!req.user) return res.redirect('/login');
-  RecordUtil.createNutrition(req.user, req.body, (doc, msg) => {
+  NutritionUtil.createNutrition(req.user, req.body, (doc, msg) => {
 
   }, (err) => {
 
@@ -81,7 +92,7 @@ router.post('/nutrition/create', (req, res) => {
 });
 router.post('/nutrition/update', (req, res) => {
   if (!req.user) return res.redirect('/login');
-  RecordUtil.updateNutrition(req.user, req.body, (doc, msg) => {
+  NutritionUtil.updateNutrition(req.user, req.body, (doc, msg) => {
 
   }, (err) => {
 
@@ -89,7 +100,7 @@ router.post('/nutrition/update', (req, res) => {
 });
 router.post('/nutrition/delete', (req, res) => {
   if (!req.user) return res.redirect('/login');
-  RecordUtil.deleteNutrition(req.user, req.body, (doc, msg) => {
+  NutritionUtil.deleteNutrition(req.user, req.body, (doc, msg) => {
 
   }, (err) => {
 

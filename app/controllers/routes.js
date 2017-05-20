@@ -1,6 +1,7 @@
 var express = require('express'),
   router = express.Router(),
   mongoose = require('mongoose'),
+  UserUtil = require('../utils/user'),
   RecordUtil = require('../utils/record'),
   CategoryUtil = require('../utils/category');
 
@@ -18,11 +19,10 @@ router.get('/', function (req, res, next) {
 });
 
 /*
-* @fn: Dashboard (User restricted)
+* @fn: Dashboard, Session, Weight (User restricted)
 */
 router.get('/dashboard', function (req, res, next) {
   if (!req.user ) { return res.redirect('/login'); }
-
   RecordUtil.getRecordsForUser(req.user._id,
     (docs, msg) => {
       res.render('dashboard', {
@@ -40,32 +40,55 @@ router.get('/dashboard', function (req, res, next) {
     }, 0, 20);
 });
 router.get('/session', function (req, res, next) {
-  // If user is NOT logged in redirect to login
   if (!req.user) return res.redirect('/login');
   CategoryUtil.getCategories((docs, msg) => {
     res.render('session', {
+      user: req.user,
       success: req.flash('success'),
       error: req.flash('error'),
       categories: docs,
       url: 'Session'
     });
-  }, () => {
-
-  })
+  }, (err) => {
+    req.flash('error', err);
+    res.render('session', {
+      user: req.user,
+      success: req.flash('success'),
+      error: req.flash('error'),
+      categories: docs,
+      url: 'Session'
+    });
+  });
 });
-router.get('/session/edit/:sessionId', function (req, res, next) {
-  // If user is NOT logged in redirect to login
+router.get('/session/update/:sessionId', function (req, res, next) {
   if (!req.user) return res.redirect('/login');
   CategoryUtil.getCategories((docs, msg) => {
     res.render('session', {
+      user: req.user,
       success: req.flash('success'),
       error: req.flash('error'),
       categories: docs,
       url: 'Session'
     });
-  }, () => {
-
-  })
+  }, (err) => {
+    req.flash('error', err);
+    res.render('session', {
+      user: req.user,
+      success: req.flash('success'),
+      error: req.flash('error'),
+      categories: docs,
+      url: 'Session'
+    });
+  });
+});
+router.get('/weight/create/:recordId', function (req, res, next) {
+  if (!req.user) return res.redirect('/login');
+  res.render('weight', {
+    user: req.user,
+    success: req.flash('success'),
+    error: req.flash('error'),
+    url: 'Weight'
+  });
 });
 
 /*
@@ -93,7 +116,38 @@ router.get('/login', function (req, res, next) {
 */
 router.get('/admin', function (req, res, next) {
   if (!req.user ) { return res.redirect('/login'); }
-  res.render('admin', {
-    user: req.user
-  });
+  getDataForAdmin(null, null, null, (users, records, categories) => {
+    res.render('admin', {
+      user: req.user,
+      users: users,
+      records: records,
+      categories: categories
+    });
+  }, (err) => {
+    req.flash('error', err);
+    res.render('admin', {
+      user: req.user,
+      error: req.flash('error')
+    });
+  })
 });
+function getDataForAdmin(users, records, categories, cb, ecb) {
+  if (users === null) {
+    UserUtil.getNumberOfUsers((count) => {
+      users = count;
+      return getDataForAdmin(users, records, categories, cb, ecb);
+    }, (err) => { return ecb(err); });
+  } else if (records === null) {
+    RecordUtil.getNumberOfRecords((count) => {
+      records = count;
+      return getDataForAdmin(users, records, categories, cb, ecb);
+    }, (err) => { return ecb(err); });
+  } else if (categories === null) {
+    CategoryUtil.getNumberOfCategories((count) => {
+      categories = count;
+      return getDataForAdmin(users, records, categories, cb, ecb);
+    }, (err) => { return ecb(err); });
+  } else {
+    return cb(users, records, categories);
+  }
+}

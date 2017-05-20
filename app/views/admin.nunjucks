@@ -1,21 +1,51 @@
 {% extends 'layout.nunjucks' %}
 {% block content %}
 
-<h4>Create Category</h4>
-<form action="/category/create" method="post">
-  {# Name #}
-  <div class="form-group form-group-sm">
-    <input name="name" placeholder="Name" type="text" class="form-control">
+<div class="row">
+  <div class="col-xs-12">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Count</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Users</td>
+          <td>{{ users }}</td>
+        </tr>
+        <tr>
+          <td>Records</td>
+          <td>{{ records }}</td>
+        </tr>
+        <tr>
+          <td>Categories</td>
+          <td>{{ categories }}</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
-  <div class="form-group form-group-sm">
-    <input name="primaryUnit" placeholder="Primary unit" type="text" class="form-control">
+</div>
+<div class="row">
+  <div class="col-xs-12">
+    <h4>Create Category</h4>
+    <form action="/category/create" method="post">
+      {# Name #}
+      <div class="form-group form-group-sm">
+        <input name="name" placeholder="Name" type="text" class="form-control">
+      </div>
+      <div class="form-group form-group-sm">
+        <input name="primaryUnit" placeholder="Primary unit" type="text" class="form-control">
+      </div>
+      <div class="form-group form-group-sm">
+        <input name="secondaryUnit" placeholder="Secondary unit" type="text" class="form-control">
+      </div>
+      <div class="form-group form-group-sm">
+        <button type="submit" class="btn btn-primary">Create Category</button>
+      </div>
+    </form>
   </div>
-  <div class="form-group form-group-sm">
-    <input name="secondaryUnit" placeholder="Secondary unit" type="text" class="form-control">
-  </div>
-  <div class="form-group form-group-sm">
-    <button type="submit" class="btn btn-primary">Create Category</button>
-  </div>
-</form>
+</div>
 
 {% endblock %}

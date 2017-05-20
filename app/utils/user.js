@@ -5,12 +5,9 @@ var mongoose = require('mongoose'),
 
 module.exports = {
   registerUser: (body, cb, ecb) => {
-    // Check if passwords match
     if (body.password !== body.password2) {
       return ecb('Passwords does not match');
     }
-
-    // Check if username is taken
     User.findOne({ username: body.username }, (err, user) => {
       if (err) {
         return ecb('An internal error occurred');
@@ -18,24 +15,26 @@ module.exports = {
       if (user) {
         return ecb('Username is already taken');
       }
-
-      // Encrypt password
       bcrypt.genSalt(10, (err, salt) => {
         bcrypt.hash(body.password, salt, (err, hash) => {
-          if (err) {
-            return ecb('An internal error occurred');
-          }
+          if (err) { return ecb('An internal error occurred'); }
           User.create({
             username: body.username,
             password: hash
-          }, (err, user) => {
+          }, (err, doc) => {
             if (err) {
               return ecb('An internal error occurred when creating user');
             }
-            return cb('User created successfully');
+            return cb(doc, 'User created successfully');
           });
         });
       });
+    });
+  },
+  getNumberOfUsers: (cb, ecb) => {
+    User.count({}, (err, count) => {
+      if (err) { return ecb('An internal error occurred'); }
+      return cb(count);
     });
   }
 };

@@ -42,7 +42,6 @@
           <li class="{{ 'active' if url === 'register' }}"><a href="/register">Register</a></li>
         {% endif %}
         </ul>
-
         {% if user %}
         <form class="navbar-form navbar-right" action="/user/logout" method="post">
           <button class="btn btn-danger" type="submit">Logout</button>

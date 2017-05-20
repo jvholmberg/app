@@ -41,7 +41,8 @@
                 <td>{{ r.timestamp }}</td>
                 <td>{{ s.name }}</td>
                 <td>
-                  <a class="btn btn-sm btn-primary" href="/session/edit/{{s._id}}">Edit</a>
+                  <a class="btn btn-sm btn-primary" href="/weight/create/{{r._id}}">Edit Weight</a>
+                  <a class="btn btn-sm btn-primary" href="/session/update/{{s._id}}">Edit Session</a>
                   <a class="btn btn-sm btn-danger" href="/record/session/delete/{{r._id}}/{{s._id}}">Delete</a>
                 </td>
               </tr>
