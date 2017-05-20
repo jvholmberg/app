@@ -1,5 +1,6 @@
 var mongoose = require('mongoose'),
-  Record = mongoose.model('Record');
+  Record = mongoose.model('Record'),
+  LogUtil = require('./log');
 
 module.exports = {
 
@@ -30,8 +31,11 @@ module.exports = {
 
     // Create session in db
     Record.findOneAndUpdate(query, update, options, (err, doc) => {
-      if (err) { ecb('Error: Could not create session'); }
-      cb(doc, 'Session was created');
+      if (err) {
+        LogUtil.writeToLog('@fn: createSession', err);
+        return ecb('Error: Could not create session');
+      }
+      return cb(doc, 'Session was created');
     });
   },
   updateSession: (user, data, cb, ecb) => {
@@ -64,8 +68,11 @@ module.exports = {
 
     // Create session in db
     Record.findOneAndUpdate(query, update, options, (err, doc) => {
-      if (err) { ecb('Error: Could not create session'); }
-      cb(doc, 'Session was created');
+      if (err) {
+        LogUtil.writeToLog('@fn: updateSession', err);
+        return ecb('Error: Could not create session');
+      }
+      return cb(doc, 'Session was created');
     });
   },
   deleteSession: (user, data, cb, ecb) => {
@@ -94,8 +101,11 @@ module.exports = {
 
     // Create session in db
     Record.findOneAndUpdate(query, update, options, (err, doc) => {
-      if (err) { ecb('Error: Could not delete session'); }
-      cb(doc, 'Session was deleted');
+      if (err) {
+        LogUtil.writeToLog('@fn: deleteSession', err);
+        return ecb('Error: Could not delete session');
+      }
+      return cb(doc, 'Session was deleted');
     });
   }
 

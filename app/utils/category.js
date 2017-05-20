@@ -5,8 +5,11 @@ var mongoose = require('mongoose'),
 module.exports = {
   getCategories: (cb, ecb) => {
     Category.find((err, doc) => {
-      if (err) { ecb('Error when fetching categories'); }
-      cb(doc, 'Category created');
+      if (err) {
+        LogUtil.writeToLog('@fn: getCategories', err);
+        return ecb('Error when fetching categories');
+      }
+      return cb(doc, 'Category created');
     });
   },
   createCategory: (data, cb, ecb) => {
@@ -15,14 +18,19 @@ module.exports = {
       primaryUnit: data.primaryUnit,
       secondaryUnit: data.secondaryUnit,
     }, (err, doc) => {
-      if (err) { ecb('An error ocurred when creating category'); }
-      cb(doc, 'Categories loaded');
+      if (err) {
+        LogUtil.writeToLog('@fn: createCategory', err);
+        return ecb('An error ocurred when creating category');
+      }
+      return cb(doc, 'Categories loaded');
     });
   },
   getNumberOfCategories: (cb, ecb) => {
-    console.log('err');
     Category.count({}, (err, count) => {
-      if (err) { return ecb('An internal error occurred'); }
+      if (err) {
+        LogUtil.writeToLog('@fn: getNumberOfCategories', err);
+        return ecb('An internal error occurred');
+      }
       return cb(count);
     });
   }

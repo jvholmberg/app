@@ -3,7 +3,8 @@ var express = require('express'),
   mongoose = require('mongoose'),
   UserUtil = require('../utils/user'),
   RecordUtil = require('../utils/record'),
-  CategoryUtil = require('../utils/category');
+  CategoryUtil = require('../utils/category'),
+  LogUtil = require('../utils/log');
 
 module.exports = function (app) {
   app.use('/', router);
@@ -116,13 +117,23 @@ router.get('/login', function (req, res, next) {
 */
 router.get('/admin', function (req, res, next) {
   if (!req.user ) { return res.redirect('/login'); }
-  getDataForAdmin(null, null, null, (users, records, categories) => {
-    res.render('admin', {
-      user: req.user,
-      users: users,
-      records: records,
-      categories: categories
-    });
+  getDataForAdmin(null, null, null, null, (users, records, categories, nrLogs) => {
+    LogUtil.getLogs((logs, msg) => {
+      res.render('admin', {
+        user: req.user,
+        users: users,
+        records: records,
+        categories: categories,
+        nrLogs: nrLogs,
+        logs: logs
+      });
+    }, (err) => {
+      req.flash('error', err);
+      res.render('admin', {
+        user: req.user,
+        error: req.flash('error')
+      });
+    }, 0, 25)
   }, (err) => {
     req.flash('error', err);
     res.render('admin', {
@@ -131,23 +142,28 @@ router.get('/admin', function (req, res, next) {
     });
   })
 });
-function getDataForAdmin(users, records, categories, cb, ecb) {
+function getDataForAdmin(users, records, categories, logs, cb, ecb) {
   if (users === null) {
     UserUtil.getNumberOfUsers((count) => {
       users = count;
-      return getDataForAdmin(users, records, categories, cb, ecb);
+      return getDataForAdmin(users, records, categories, logs, cb, ecb);
     }, (err) => { return ecb(err); });
   } else if (records === null) {
     RecordUtil.getNumberOfRecords((count) => {
       records = count;
-      return getDataForAdmin(users, records, categories, cb, ecb);
+      return getDataForAdmin(users, records, categories, logs, cb, ecb);
     }, (err) => { return ecb(err); });
   } else if (categories === null) {
     CategoryUtil.getNumberOfCategories((count) => {
       categories = count;
-      return getDataForAdmin(users, records, categories, cb, ecb);
+      return getDataForAdmin(users, records, categories, logs, cb, ecb);
     }, (err) => { return ecb(err); });
-  } else {
-    return cb(users, records, categories);
+  } else if (logs === null) {
+    LogUtil.getNumberOfErrors((count) => {
+      logs = count;
+      return getDataForAdmin(users, records, categories, logs, cb, ecb);
+    }, (err) => { return ecb(err); });
+  }else {
+    return cb(users, records, categories, logs);
   }
 }

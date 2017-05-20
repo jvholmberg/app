@@ -1,5 +1,6 @@
 var mongoose = require('mongoose'),
-  Record = mongoose.model('Record');
+  Record = mongoose.model('Record'),
+  LogUtil = require('./log');
 
 module.exports = {
 
@@ -28,7 +29,10 @@ module.exports = {
 
     // Create session in db
     Record.findOneAndUpdate(query, update, options, (err, doc) => {
-      if (err) { ecb('Error: Could not create weight'); }
+      if (err) {
+        LogUtil.writeToLog('@fn: createWeight', err);
+        return ecb('Error: Could not create weight');
+      }
       cb(doc, 'Weight was created');
     });
   },
@@ -56,5 +60,5 @@ module.exports = {
     //     return ecb(err)
     //   });
   }
-  
+
 };
