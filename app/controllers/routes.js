@@ -43,6 +43,7 @@ router.get('/dashboard', function (req, res, next) {
 router.get('/session', function (req, res, next) {
   if (!req.user) return res.redirect('/login');
   CategoryUtil.getCategories((docs, msg) => {
+    console.log();
     res.render('session', {
       user: req.user,
       success: req.flash('success'),
@@ -56,7 +57,7 @@ router.get('/session', function (req, res, next) {
       user: req.user,
       success: req.flash('success'),
       error: req.flash('error'),
-      categories: docs,
+      categories: JSON.stringify(docs),
       url: 'Session'
     });
   });

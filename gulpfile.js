@@ -3,7 +3,8 @@ var gulp = require('gulp'),
   plumber = require('gulp-plumber'),
   concat = require('gulp-concat'),
   livereload = require('gulp-livereload'),
-  sass = require('gulp-sass');
+  sass = require('gulp-sass'),
+  webpack = require('webpack-stream');;
 
 gulp.task('sass', function () {
   gulp.src('./public/css/*.scss')
@@ -16,6 +17,28 @@ gulp.task('sass', function () {
 
 gulp.task('watch', function() {
   gulp.watch('./public/css/*.scss', ['sass']);
+});
+
+gulp.task('babel', function() {
+  return gulp.src('public/js/client.js')
+    .pipe(webpack({
+      watch: true,
+      module: {
+        loaders: [{
+          test: /.jsx?$/,
+          loader: 'babel-loader',
+          exclude: /node_modules/,
+          query: {
+            presets: ['es2015', 'react', 'stage-0'],
+            plugins: ['react-html-attrs', 'transform-decorators-legacy', 'transform-class-properties']
+          }
+        }]
+      },
+      output: {
+        filename: 'client.bundle.js'
+      }
+    }))
+    .pipe(gulp.dest('public/js'));
 });
 
 gulp.task('develop', function () {
@@ -37,6 +60,7 @@ gulp.task('develop', function () {
 
 gulp.task('default', [
   'sass',
+  'babel',
   'develop',
   'watch'
 ]);

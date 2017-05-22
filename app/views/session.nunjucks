@@ -6,68 +6,139 @@
   <form action="/record/session/create" method="post">
     {# Name #}
     <div class="form-group form-group-sm">
-      <label for="exercise-name">Name</label>
-      <input name="name" type="text" class="form-control" id="exercise-name">
+      <label>
+        Name
+        <input name="name" type="text" class="form-control">
+      </label>
     </div>
+
     {# Category #}
     <div class="form-group form-group-sm">
-      <label for="exercise-category">Category</label>
-      <select id="exercise-category" class="form-control" name="category">
-        {% for c in categories %}
-            <option value="{{ c.name }}">{{ c.name }}</option>
-        {% endfor %}
-      </select>
+      <label>
+        Category
+        <select class="form-control" name="category">
+          {% for c in categories %}
+            <option value="{{ c._id }}">{{ c.name }}</option>
+          {% endfor %}
+        </select>
+      </label>
     </div>
+
     {# Date #}
     <div class="form-group form-group-sm">
-      <label for="exercise-date">Date</label>
-      <div class="input-group input-group-sm date">
-        <input name="timestamp" id="exercise-date" type="text" class="form-control">
-        <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
-      </div>
+      <label>
+        Date
+        <div class="input-group input-group-sm date">
+          <input name="timestamp" type="text" class="form-control">
+          <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+        </div>
+      </label>
     </div>
     <h4>Data</h4>
-    <div id="lol">
 
-    </div>
+    {# Actions #}
     <div class="form-group form-group-sm">
-      <button type="submit" class="btn btn-primary">Create</button>
-      <a class="btn btn-danger" href="/dashboard">Cancel</a>
+      <a class="btn btn-primary" id="exercise_append">Add exercise</a>
+      <a class="btn btn-warning" id="exercise_pop">Remove exercise</a>
     </div>
 
     {# Exercises #}
-  </form>
-
-
-
-
-  <script type="text/javascript">
-    var html = `
-    <div class="row">
-      <div class="form-group form-group-sm">
-        <div class="col-xs-6">
-          <input placeholder="Name" type="text" class="form-control">
-        </div>
-        <div class="col-xs-3">
-          <div class="input-group input-group-sm">
-            <input type="text" class="form-control" placeholder="Value" aria-describedby="basic-addon2">
-            <span class="input-group-addon" id="basic-addon2">kg</span>
+    <div id="exercise_wrapper" class="form-group form-group-sm"></div>
+    <div id="exercise_prototype" hidden>
+      <div class="row">
+        <div class="form-group form-group-sm">
+          <div class="col-xs-3">
+            <input placeholder="Name" type="text" class="form-control">
           </div>
-        </div>
-        <div class="col-xs-3">
-          <div class="input-group input-group-sm">
-            <input type="text" class="form-control" placeholder="Value" aria-describedby="basic-addon2">
-            <span class="input-group-addon" id="basic-addon2">x</span>
+          <div class="col-xs-3">
+            <div class="input-group input-group-sm">
+              <input type="text" class="form-control" placeholder="Value" aria-describedby="exercise_addon_primary">
+              <span class="input-group-addon" class="exercise_addon_primary"></span>
+            </div>
+          </div>
+          <div class="col-xs-3">
+            <div class="input-group input-group-sm">
+              <input type="text" class="form-control" placeholder="Value" aria-describedby="exercise_addon_secondary">
+              <span class="input-group-addon" class="exercise_addon_secondary"></span>
+            </div>
+          </div>
+          <div class="col-xs-3">
+            <div class="input-group input-group-sm">
+              <input type="text" class="form-control" placeholder="Value" aria-describedby="exercise_addon_third">
+              <span class="input-group-addon" class="exercise_addon_third"></span>
+            </div>
           </div>
         </div>
       </div>
-    </div>`;
-    $('#lol').append(html);
-    $('#lol').append(html);
-    $('#lol').append(html);
-    $('#lol').append(html);
-    $('#lol').append(html);
-    $('#lol').append(html);
+    </div>
+
+    {# Actions #}
+      <div class="form-group form-group-sm">
+        <button type="submit" class="btn btn-success">Save Session</button>
+        <a class="btn btn-danger" href="/dashboard">Cancel</a>
+      </div>
+  </form>
+
+  <div id="app">
+
+  </div>
+
+  <script type="text/javascript" src="/js/client.bundle.js">
+
+  </script>
+
+  <script type="text/javascript">
+
+
+    var $categorySelect = $('select[name=category]'),
+      $exerciseAppendButton = $('#exercise_append'),
+      $exercisePopButton = $('#exercise_pop'),
+      $exerciseWrapper = $('#exercise_wrapper'),
+      $exercisePrototype = $('#exercise_prototype'),
+      resources = null,
+      currentCategory = null,
+      data = null;
+
+    function getResources() {
+      $.ajax({
+        url: '/category',
+        type: 'get',
+        success: function (res) {
+          resources = res;
+        },
+        error: function (err) {
+          console.log(err);
+        }
+      });
+    }
+    function changeCategory (e) {
+      for (var i = 0; i < resources.length; i++) {
+        if (resources[i]._id !== e.target.value) {  }
+        currentCategory = resources[i];
+        updateCategories();
+        break;
+      }
+    }
+    function updateCategories() {
+
+    }
+    function appendExercise () {
+      $exerciseWrapper.append($exercisePrototype.html());
+    }
+    function popExercise () {
+      $exerciseWrapper.children().last().remove();
+    }
+    function composeData() {
+
+    }
+    // Fetch neccesary resources for this page
+    getResources();
+
+    $categorySelect.on('change', changeCategory);
+    $exerciseAppendButton.on('click', appendExercise);
+    $exercisePopButton.on('click', popExercise);
+
+
   </script>
 
 

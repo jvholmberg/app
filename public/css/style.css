@@ -5935,6 +5935,10 @@ table tbody > tr > td,
 .has-success .input-group-addon {
   border: 1px solid #3FB618; }
 
+label {
+  width: 100%;
+  font-weight: 400; }
+
 .nav-pills > li > a {
   border-radius: 0; }
 

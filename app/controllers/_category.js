@@ -18,3 +18,11 @@ router.post('/create', (req, res) => {
     });
   });
 });
+router.get('', (req, res) => {
+  if (!req.user) return res.redirect('/login');
+  CategoryUtil.getCategories((docs, msg) => {
+    res.json(docs);
+  }, (err) => {
+    res.send(err);
+  });
+});
