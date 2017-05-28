@@ -9,7 +9,8 @@
   </div>
 </div>
 
-
+<div id="app"></div>
+<script type="text/javascript" src="/js/client.bundle.js"></script>
 
 
 

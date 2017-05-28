@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import SessionForm from './components/sessionForm';
+import SessionForm from './components/sessionform.jsx';
 
 const app = document.getElementById('app');
 

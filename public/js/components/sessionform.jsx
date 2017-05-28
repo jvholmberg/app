@@ -1,6 +1,7 @@
 'use strict';
 
 import React from 'react';
+import DatePicker from './datepicker.jsx';
 
 export default class SessionForm extends React.Component {
 
@@ -9,17 +10,19 @@ export default class SessionForm extends React.Component {
   }
 
   componentWillMount() {
-    
+
   }
 
   componentWillUnmount() {
-    pubsub.unsubscribe(this.pubsub_token);
+
   }
 
   render() {
 
     return (
-      <h1>Hello World</h1>
+      <div>
+        <DatePicker />
+      </div>
     );
   }
 }

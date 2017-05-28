@@ -54,15 +54,15 @@
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
-	var _sessionForm = __webpack_require__(183);
+	var _sessionform = __webpack_require__(183);
 
-	var _sessionForm2 = _interopRequireDefault(_sessionForm);
+	var _sessionform2 = _interopRequireDefault(_sessionform);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var app = document.getElementById('app');
 
-	_reactDom2.default.render(_react2.default.createElement(_sessionForm2.default, null), app);
+	_reactDom2.default.render(_react2.default.createElement(_sessionform2.default, null), app);
 
 /***/ }),
 /* 1 */
@@ -21941,6 +21941,10 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _datepicker = __webpack_require__(184);
+
+	var _datepicker2 = _interopRequireDefault(_datepicker);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -21963,17 +21967,15 @@
 	    value: function componentWillMount() {}
 	  }, {
 	    key: 'componentWillUnmount',
-	    value: function componentWillUnmount() {
-	      pubsub.unsubscribe(this.pubsub_token);
-	    }
+	    value: function componentWillUnmount() {}
 	  }, {
 	    key: 'render',
 	    value: function render() {
 
 	      return _react2.default.createElement(
-	        'h1',
+	        'div',
 	        null,
-	        'Hello World'
+	        _react2.default.createElement(_datepicker2.default, null)
 	      );
 	    }
 	  }]);
@@ -21982,6 +21984,208 @@
 	}(_react2.default.Component);
 
 	exports.default = SessionForm;
+
+/***/ }),
+/* 184 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = undefined;
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var DatePicker = function (_React$Component) {
+	  _inherits(DatePicker, _React$Component);
+
+	  function DatePicker() {
+	    _classCallCheck(this, DatePicker);
+
+	    var _this = _possibleConstructorReturn(this, (DatePicker.__proto__ || Object.getPrototypeOf(DatePicker)).call(this));
+
+	    _this._loadData.bind(_this);
+	    _this._getNameOfDay.bind(_this);
+	    _this._getTargetWeekday.bind(_this);
+	    return _this;
+	  }
+
+	  _createClass(DatePicker, [{
+	    key: 'componentWillMount',
+	    value: function componentWillMount() {}
+	  }, {
+	    key: 'componentWillUnmount',
+	    value: function componentWillUnmount() {}
+
+	    /*
+	    * @fn: _loadData()
+	    * @summary:
+	    */
+
+	  }, {
+	    key: '_loadData',
+	    value: function _loadData() {
+	      var ret = [];
+
+	      // Get data for this Month
+	      var targetMonth = this.props.targetDate.getMonth();
+	      var daysInThisMonth = this._getDaysInTargetMonth();
+	      var firstDayOfThisMonth = this._getTargetWeekday(0);
+	      var lastDayOfThisMonth = this._getTargetWeekday(daysInThisMonth);
+
+	      // If first day of month is not Monday then add neccessary data from previous
+	      if (firstDayOfThisMonth !== 1) {
+	        this.props.targetDate.setMonth(targetMonth - 1);
+	        var daysInPreviousMonth = this._getDaysInTargetMonth();
+
+	        for (var i = 1; i < firstDayOfThisMonth; i++) {
+	          ret.unshift({
+	            name: daysInPreviousMonth,
+	            val: this.props.targetDate.getFullYear() + '/' + targetMonth + '/' + daysInPreviousMonth
+	          });
+	          daysInPreviousMonth--;
+	        }
+	      }
+
+	      // Move targetDate back to this month
+	      this.props.targetDate.setMonth(targetMonth);
+
+	      // Add dates for this month
+	      for (var _i = 1; _i <= daysInThisMonth; _i++) {
+	        ret.push({
+	          name: _i,
+	          val: this.props.targetDate.getFullYear() + '/' + (targetMonth + 1) + '/' + _i
+	        });
+	      }
+
+	      // If last day of next month is not Sunday then add neccessary data from next
+	      if (lastDayOfThisMonth !== 0) {
+	        var day = 1;
+	        for (var _i2 = lastDayOfThisMonth; _i2 < 7; _i2++) {
+	          ret.push({
+	            name: day,
+	            val: this.props.targetDate.getFullYear() + '/' + (targetMonth + 2) + '/' + day
+	          });
+	          day++;
+	        }
+	      }
+	    }
+	    /*
+	    * @fn: _getDaysInTargetMonth(), _getTargetWeekday(e)
+	    * @summary:
+	    */
+
+	  }, {
+	    key: '_getDaysInTargetMonth',
+	    value: function _getDaysInTargetMonth() {
+	      return new Date(this.props.targetDate.getFullYear(), this.props.targetDate.getMonth() + 1, 0).getDate();
+	    }
+	  }, {
+	    key: '_getTargetWeekday',
+	    value: function _getTargetWeekday(e) {
+	      if (!e) {
+	        e = this.props.targetDate.getDate();
+	      }
+	      return new Date(this.props.targetDate.getFullYear(), this.props.targetDate.getMonth(), e).getDay();
+	    }
+	    /*
+	    * @fn: _getNameOfDay(e), _getNameOfMonth(e)
+	    * @summary: Zero-indexed, returns name of day/month.
+	    * @default: Returns name of targeted day/month.
+	    */
+
+	  }, {
+	    key: '_getNameOfDay',
+	    value: function _getNameOfDay(e) {
+	      if (!e) {
+	        e = this.props.targetDate.getDay();
+	      }
+	      e = e % 7;
+	      return [{ full: 'Sunday', short: 'Sun', min: 'Su' }, { full: 'Monday', short: 'Mon', min: 'Mo' }, { full: 'Tuesday', short: 'Tue', min: 'Tu' }, { full: 'Wednesday', short: 'Wed', min: 'We' }, { full: 'Thursday', short: 'Thu', min: 'Th' }, { full: 'Friday', short: 'Fri', min: 'Fr' }, { full: 'Saturday', short: 'Sat', min: 'Sa' }][e];
+	    }
+	  }, {
+	    key: '_getNameOfMonth',
+	    value: function _getNameOfMonth(e) {
+	      if (!e) {
+	        e = this.props.targetDate.getMonth();
+	      }
+	      e = e % 12;
+	      return [{ full: 'January', short: 'Jan' }, { full: 'February', short: 'Feb' }, { full: 'March', short: 'Mar' }, { full: 'April', short: 'Apr' }, { full: 'May', short: 'May' }, { full: 'June', short: 'Jun' }, { full: 'July', short: 'Jul' }, { full: 'August', short: 'Aug' }, { full: 'September', short: 'Sep' }, { full: 'October', short: 'Oct' }, { full: 'November', short: 'Nov' }, { full: 'December', short: 'Dec' }][e];
+	    }
+	    /*
+	    * @fn: _getAllWeekdayNames(e)
+	    * @summary: Get names of all weekdays in different formats (full, short, min)
+	    */
+
+	  }, {
+	    key: '_getAllWeekdayNames',
+	    value: function _getAllWeekdayNames(e) {
+	      switch (e) {
+	        case 'short':
+	          return ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+	          break;
+	        case 'min':
+	          return ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
+	        default:
+	          return ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+	      }
+	    }
+	    /*
+	    * @fn: _setTargetDate(e)
+	    * @summary: Sets targeted day, month & year
+	    */
+
+	  }, {
+	    key: '_setTargetDate',
+	    value: function _setTargetDate() {
+	      console.error('_setTargetDate() Not Implemented');
+	    }
+	  }, {
+	    key: '_getFormattedDate',
+	    value: function _getFormattedDate(y, m, d) {
+	      return y + '/' + (m < 10 ? '0' + m : m) + '/' + (d < 10 ? '0' + d : d);
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      this._loadData();
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        _react2.default.createElement(
+	          'label',
+	          null,
+	          'label',
+	          _react2.default.createElement('input', { type: 'date' })
+	        )
+	      );
+	    }
+	  }]);
+
+	  return DatePicker;
+	}(_react2.default.Component);
+
+	exports.default = DatePicker;
+
+
+	DatePicker.defaultProps = {
+	  currentDate: new Date(),
+	  targetDate: new Date()
+	};
 
 /***/ })
 /******/ ]);
